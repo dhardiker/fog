@@ -78,9 +78,18 @@ module Fog
         end
 
         def encode_pairs(params)
-          params.keys.map do |key|
-            "#{key} #{params[key]}"
+          remap = remap_keys(params)
+          remap.keys.map do |key|
+            "#{key} #{remap[key]}"
           end.join("\n")
+        end
+
+        def remap_keys(params)
+          remap = Hash.new
+          params.keys.map do |key|
+            remap[key.to_s.gsub('_',':')] = params[key]
+          end
+          remap
         end
 
         # TODO
